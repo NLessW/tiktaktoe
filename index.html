@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>틱택토 게임</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <!-- 상단 인증 영역 -->
+            <div id="auth-section" class="auth-section">
+                <button id="login-btn" class="auth-btn" onclick="showAuthModal('login')">LOGIN</button>
+                <div id="user-info" class="user-info hidden">
+                    <span id="user-nickname">Player</span>
+                    <button class="logout-btn" onclick="signOut()">LOGOUT</button>
+                </div>
+            </div>
+
+            <h1>🕹️ TIK-TAK-TOE</h1>
+
+            <div id="menu" class="menu">
+                <h2>SELECT LEVEL</h2>
+                <div class="difficulty-buttons">
+                    <button onclick="startGame(1)">LEVEL 1 - EASY</button>
+                    <button onclick="startGame(2)">LEVEL 2 - NORMAL</button>
+                    <button onclick="startGame(3)">LEVEL 3 - HARD</button>
+                    <button onclick="startGame(4)">LEVEL 4 - INFINITE</button>
+                </div>
+                <p class="hint">LEVEL 4: 돌이 3개 이상 시 먼저 둔 순서대로 돌이 사라집니다</p>
+            </div>
+
+            <div id="game" class="game hidden">
+                <div class="game-info">
+                    <span id="difficulty-display">난이도: 1</span>
+                    <span id="turn-display">차례: 플레이어</span>
+                    <span id="turn-count">턴: 0</span>
+                </div>
+
+                <div class="board" id="board">
+                    <div class="cell" data-index="0" onclick="playerMove(0)"></div>
+                    <div class="cell" data-index="1" onclick="playerMove(1)"></div>
+                    <div class="cell" data-index="2" onclick="playerMove(2)"></div>
+                    <div class="cell" data-index="3" onclick="playerMove(3)"></div>
+                    <div class="cell" data-index="4" onclick="playerMove(4)"></div>
+                    <div class="cell" data-index="5" onclick="playerMove(5)"></div>
+                    <div class="cell" data-index="6" onclick="playerMove(6)"></div>
+                    <div class="cell" data-index="7" onclick="playerMove(7)"></div>
+                    <div class="cell" data-index="8" onclick="playerMove(8)"></div>
+                </div>
+
+                <div id="message" class="message"></div>
+
+                <div class="game-buttons">
+                    <button onclick="resetGame()">RESTART</button>
+                    <button onclick="goToMenu()">MENU</button>
+                </div>
+            </div>
+
+            <div id="stats" class="stats">
+                <h3>🏆 RECORD</h3>
+                <p>
+                    WIN: <span id="wins">0</span> | LOSE: <span id="losses">0</span> | DRAW:
+                    <span id="draws">0</span>
+                </p>
+                <p>TOTAL SCORE: <span id="total-score">0</span></p>
+                <button id="ranking-toggle-btn" class="ranking-toggle-btn hidden" onclick="toggleRanking()">
+                    🌍 GLOBAL RANKING
+                </button>
+            </div>
+        </div>
+
+        <!-- 글로벌 순위 모달 -->
+        <div id="ranking-modal" class="modal hidden">
+            <div class="modal-content ranking-modal-content">
+                <button class="modal-close" onclick="toggleRanking()">✕</button>
+                <h2 class="ranking-title">🌍 GLOBAL RANKING</h2>
+                <div id="ranking-list" class="ranking-list">
+                    <p class="no-ranking">로그인하면 순위를 볼 수 있습니다.</p>
+                </div>
+                <div id="ranking-pagination" class="ranking-pagination hidden">
+                    <button id="prev-page-btn" class="page-btn" onclick="changePage(-1)" disabled>◀ PREV</button>
+                    <span id="page-info" class="page-info">1 / 1</span>
+                    <button id="next-page-btn" class="page-btn" onclick="changePage(1)" disabled>NEXT ▶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 로그인/회원가입 모달 -->
+        <div id="auth-modal" class="modal hidden">
+            <div class="modal-content">
+                <button class="modal-close" onclick="hideAuthModal()">✕</button>
+                <div class="auth-tabs">
+                    <button id="login-tab" class="auth-tab active" onclick="switchAuthMode('login')">LOGIN</button>
+                    <button id="signup-tab" class="auth-tab" onclick="switchAuthMode('signup')">SIGN UP</button>
+                </div>
+
+                <!-- 로그인 폼 -->
+                <div id="login-form" class="auth-form">
+                    <input
+                        type="email"
+                        id="email-input"
+                        class="auth-input"
+                        placeholder="이메일"
+                        onkeypress="handleLoginEnter(event)"
+                    />
+                    <input
+                        type="password"
+                        id="password-input"
+                        class="auth-input"
+                        placeholder="비밀번호"
+                        onkeypress="handleLoginEnter(event)"
+                    />
+                    <button class="auth-submit" onclick="signInWithEmail()">로그인</button>
+                </div>
+
+                <!-- 회원가입 폼 -->
+                <div id="signup-form" class="auth-form hidden">
+                    <input
+                        type="text"
+                        id="signup-nickname"
+                        class="auth-input"
+                        placeholder="닉네임"
+                        onkeypress="handleSignupEnter(event)"
+                    />
+                    <input
+                        type="email"
+                        id="signup-email"
+                        class="auth-input"
+                        placeholder="이메일"
+                        onkeypress="handleSignupEnter(event)"
+                    />
+                    <input
+                        type="password"
+                        id="signup-password"
+                        class="auth-input"
+                        placeholder="비밀번호 (6자 이상)"
+                        onkeypress="handleSignupEnter(event)"
+                    />
+                    <button class="auth-submit" onclick="signUpWithEmail()">회원가입</button>
+                </div>
+
+                <p id="auth-message" class="auth-message"></p>
+            </div>
+        </div>
+
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+        <!-- 게임 스크립트 -->
+        <script src="src/firebase-config.js"></script>
+        <script src="src/index.js"></script>
+    </body>
+</html>
