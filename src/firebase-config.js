@@ -202,6 +202,34 @@ let rankingTotalPages = 1;
 let rankingPerPage = 10;
 let allRankingData = [];
 
+// 유저의 현재 순위 조회
+async function getUserRank(userId) {
+    try {
+        const snapshot = await db.collection('users').orderBy('totalScore', 'desc').get();
+
+        // 한 판 이상 플레이한 유저만 필터링
+        const filteredDocs = snapshot.docs.filter((doc) => {
+            const data = doc.data();
+            const totalGames = (data.wins || 0) + (data.losses || 0) + (data.draws || 0);
+            return totalGames > 0;
+        });
+
+        const rank = filteredDocs.findIndex((doc) => doc.id === userId) + 1;
+        return rank > 0 ? rank : null;
+    } catch (error) {
+        console.error('Error getting user rank:', error);
+        return null;
+    }
+}
+
+// 순위에 따른 뱃지 반환
+function getRankBadge(rank) {
+    if (rank === 1) return '<span class="rank-badge rank-1">👑</span>';
+    if (rank === 2) return '<span class="rank-badge rank-2">🥈</span>';
+    if (rank === 3) return '<span class="rank-badge rank-3">🥉</span>';
+    return '';
+}
+
 // 글로벌 순위 로드 (전체 데이터)
 async function loadGlobalRanking() {
     try {
@@ -337,7 +365,7 @@ function refreshRanking() {
 // ==================== UI 관련 함수 ====================
 
 // 인증 UI 업데이트
-function updateAuthUI() {
+async function updateAuthUI() {
     const authSection = document.getElementById('auth-section');
     const userInfo = document.getElementById('user-info');
     const loginBtn = document.getElementById('login-btn');
@@ -349,13 +377,16 @@ function updateAuthUI() {
         if (loginBtn) loginBtn.classList.add('hidden');
         if (userInfo) {
             userInfo.classList.remove('hidden');
-            db.collection('users')
-                .doc(currentUser.uid)
-                .get()
-                .then((doc) => {
-                    const nickname = doc.exists ? doc.data().nickname : currentUser.email;
-                    document.getElementById('user-nickname').textContent = nickname;
-                });
+
+            // 유저 정보와 순위 동시에 가져오기
+            const [userDoc, userRank] = await Promise.all([
+                db.collection('users').doc(currentUser.uid).get(),
+                getUserRank(currentUser.uid),
+            ]);
+
+            const nickname = userDoc.exists ? userDoc.data().nickname : currentUser.email;
+            const rankBadge = getRankBadge(userRank);
+            document.getElementById('user-nickname').innerHTML = rankBadge + nickname;
         }
         // 순위 버튼 표시 (순위 모달은 숨김 유지)
         if (rankingToggleBtn) rankingToggleBtn.classList.remove('hidden');

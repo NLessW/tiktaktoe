@@ -484,6 +484,52 @@ h2 {
     font-size: 1rem;
     color: #00ffff;
     text-shadow: 0 0 5px #00ffff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* 순위 뱃지 스타일 */
+.rank-badge {
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1;
+    animation: badge-glow 1.5s ease-in-out infinite alternate;
+}
+
+.rank-badge.rank-1 {
+    filter: drop-shadow(0 0 8px gold);
+    animation: crown-glow 1s ease-in-out infinite alternate;
+}
+
+.rank-badge.rank-2 {
+    filter: drop-shadow(0 0 6px silver);
+}
+
+.rank-badge.rank-3 {
+    filter: drop-shadow(0 0 6px #cd7f32);
+}
+
+@keyframes crown-glow {
+    0% {
+        filter: drop-shadow(0 0 5px gold);
+        transform: scale(1);
+    }
+    100% {
+        filter: drop-shadow(0 0 15px gold) drop-shadow(0 0 25px orange);
+        transform: scale(1.1);
+    }
+}
+
+@keyframes badge-glow {
+    0% {
+        filter: drop-shadow(0 0 3px currentColor);
+    }
+    100% {
+        filter: drop-shadow(0 0 8px currentColor);
+    }
 }
 
 .logout-btn {
