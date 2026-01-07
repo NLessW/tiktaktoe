@@ -67,6 +67,7 @@ async function signUpWithEmail() {
             losses: 0,
             draws: 0,
             totalScore: 0,
+            hellCleared: false,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
@@ -170,6 +171,14 @@ async function loadUserDataFromFirestore() {
                 draws: data.draws || 0,
                 totalScore: data.totalScore || 0,
             };
+
+            // 기존 유저에게 hellCleared 필드가 없으면 추가
+            if (data.hellCleared === undefined) {
+                await db.collection('users').doc(currentUser.uid).update({
+                    hellCleared: false,
+                });
+                console.log('기존 유저에게 hellCleared 필드 추가됨');
+            }
         }
     } catch (error) {
         console.error('Error loading user data:', error);
@@ -193,6 +202,20 @@ async function saveUserDataToFirestore() {
         });
     } catch (error) {
         console.error('Error saving user data:', error);
+    }
+}
+
+// HELL 클리어 상태 저장
+async function saveHellClearedToFirestore() {
+    if (!currentUser) return;
+
+    try {
+        await db.collection('users').doc(currentUser.uid).update({
+            hellCleared: true,
+        });
+        console.log('🔥 HELL 클리어 저장 완료!');
+    } catch (error) {
+        console.error('Error saving hell cleared:', error);
     }
 }
 
@@ -297,12 +320,17 @@ function renderRankingPage() {
         const totalGames = wins + losses + draws;
         const winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) : 0;
 
+        // HELL 클리어 표시
+        const hellBadge = data.hellCleared ? '<span class="hell-badge">🔥</span>' : '';
+
         const item = document.createElement('div');
-        item.className = `ranking-item ${isCurrentUser ? 'current-user' : ''}`;
+        item.className = `ranking-item ${isCurrentUser ? 'current-user' : ''} ${
+            data.hellCleared ? 'hell-cleared' : ''
+        }`;
         item.innerHTML = `
             <div class="ranking-main">
                 <span class="rank">${medal}</span>
-                <span class="nickname">${data.nickname || 'Unknown'}</span>
+                <span class="nickname">${hellBadge}${data.nickname || 'Unknown'}</span>
                 <span class="score">${data.totalScore}점</span>
             </div>
             <div class="ranking-stats">

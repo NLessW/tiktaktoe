@@ -13,6 +13,8 @@ let T3 = {
     Stage: 1,
     PlayerStones: [],
     BotStones: [],
+    Timer: null,
+    TimeLeft: 0,
 };
 
 // 유저 통계
@@ -52,15 +54,26 @@ function updateStatsDisplay() {
 
 // 게임 시작
 function startGame(difficulty) {
+    // 이전 타이머 정리
+    if (T3.Timer) {
+        clearInterval(T3.Timer);
+    }
+
+    // LEVEL 4,5: 인피니티 모드
+    const isHellMode = difficulty === 5;
+    const isInfiniteMode = difficulty >= 4;
+
     T3 = {
         Start: true,
         Turn: Math.random() < 0.5 ? 'P' : 'B',
         Board: Array(9).fill(EMPTY),
         Difficulty: difficulty,
         TurnCount: 0,
-        Stage: difficulty === 4 ? 4 : 1,
+        Stage: isInfiniteMode ? 4 : 1,
         PlayerStones: [],
         BotStones: [],
+        Timer: null,
+        TimeLeft: 5,
     };
 
     // UI 전환
@@ -68,7 +81,14 @@ function startGame(difficulty) {
     document.getElementById('game').classList.remove('hidden');
 
     // 게임 정보 표시
-    document.getElementById('difficulty-display').textContent = `난이도: ${difficulty}`;
+    const difficultyNames = {
+        1: 'EASY',
+        2: 'NORMAL',
+        3: 'HARD',
+        4: 'INFINITE',
+        5: '🔥 HELL',
+    };
+    document.getElementById('difficulty-display').textContent = `LV.${difficulty} ${difficultyNames[difficulty]}`;
     updateTurnDisplay();
     document.getElementById('turn-count').textContent = `턴: 0`;
     document.getElementById('message').textContent = '';
@@ -81,7 +101,7 @@ function startGame(difficulty) {
     if (T3.Turn === 'P') {
         showMessage('🎯 당신이 선공입니다! 사각형을 클릭하세요.');
     } else {
-        showMessage('Bot이 선공입니다...');
+        showMessage(isHellMode ? '😈 Bot이 선공입니다...' : 'Bot이 선공입니다...');
         setTimeout(() => botTurn(), 800);
     }
 }
@@ -122,7 +142,7 @@ function playerMove(index) {
         return;
     }
 
-    // 4단계: 3개 초과 시 가장 오래된 돌 제거
+    // 4단계+: 3개 초과 시 가장 오래된 돌 제거
     if (T3.Stage === 4 && T3.PlayerStones.length >= 3) {
         const removeIndex = T3.PlayerStones.shift();
         T3.Board[removeIndex] = EMPTY;
@@ -147,8 +167,8 @@ function playerMove(index) {
     // 봇 턴으로 전환
     T3.Turn = 'B';
     updateTurnDisplay();
-    showMessage('Bot의 차례입니다...');
-    setTimeout(() => botTurn(), 800);
+    showMessage(T3.Difficulty === 5 ? '😈 Bot의 차례...' : 'Bot의 차례입니다...');
+    setTimeout(() => botTurn(), T3.Difficulty === 5 ? 400 : 800);
 }
 
 // 셀 페이드 아웃 효과
@@ -166,11 +186,14 @@ function botTurn() {
         move = randomMove();
     } else if (T3.Difficulty === 2) {
         move = Math.random() < 0.7 ? smartMove() : randomMove();
+    } else if (T3.Difficulty === 5) {
+        // HELL 모드: 미니맥스 알고리즘 (완벽한 AI)
+        move = minimaxMove();
     } else {
         move = smartMove();
     }
 
-    // 4단계: 3개 초과 시 가장 오래된 돌 제거
+    // 4단계+: 3개 초과 시 가장 오래된 돌 제거
     if (T3.Stage === 4 && T3.BotStones.length >= 3) {
         const removeIndex = T3.BotStones.shift();
         T3.Board[removeIndex] = EMPTY;
@@ -230,6 +253,208 @@ function smartMove() {
 
     // 5. 랜덤
     return randomMove();
+}
+
+// ==================== HELL 모드 전용 ====================
+
+// 미니맥스 알고리즘 (완벽한 AI)
+function minimaxMove() {
+    let bestScore = -Infinity;
+    let bestMove = null;
+
+    // 인피니티 모드에서 봇이 둘 경우 가장 오래된 돌이 사라질 위치 계산
+    let willRemove = null;
+    if (T3.Stage === 4 && T3.BotStones.length >= 3) {
+        willRemove = T3.BotStones[0];
+    }
+
+    for (let i = 0; i < 9; i++) {
+        if (T3.Board[i] === EMPTY) {
+            // 시뮬레이션: 돌 놓기
+            T3.Board[i] = BOT;
+            const newBotStones = [...T3.BotStones, i];
+
+            // 시뮬레이션: 오래된 돌 제거
+            if (willRemove !== null) {
+                T3.Board[willRemove] = EMPTY;
+            }
+
+            const score = minimax(T3.Board, 0, false, -Infinity, Infinity, newBotStones, [...T3.PlayerStones]);
+
+            // 복원
+            T3.Board[i] = EMPTY;
+            if (willRemove !== null) {
+                T3.Board[willRemove] = BOT;
+            }
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = i;
+            }
+        }
+    }
+
+    return bestMove !== null ? bestMove : randomMove();
+}
+
+// 미니맥스 with 알파베타 가지치기
+function minimax(board, depth, isMaximizing, alpha, beta, botStones, playerStones) {
+    // 종료 조건 체크
+    if (checkWinnerForStone(BOT)) return 100 - depth;
+    if (checkWinnerForStone(PLAYER)) return depth - 100;
+
+    const emptySpots = board.filter((cell) => cell === EMPTY).length;
+    if (emptySpots === 0 && T3.Stage !== 4) return 0;
+
+    // 깊이 제한 (인피니티 모드는 무한루프 방지)
+    if (depth > 12) return 0;
+
+    if (isMaximizing) {
+        let maxScore = -Infinity;
+
+        // 봇의 오래된 돌 제거 시뮬레이션
+        let willRemove = null;
+        if (T3.Stage === 4 && botStones.length >= 3) {
+            willRemove = botStones[0];
+        }
+
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === EMPTY) {
+                board[i] = BOT;
+                const newBotStones = [...botStones.slice(willRemove !== null ? 1 : 0), i];
+
+                if (willRemove !== null) board[willRemove] = EMPTY;
+
+                const score = minimax(board, depth + 1, false, alpha, beta, newBotStones, playerStones);
+
+                board[i] = EMPTY;
+                if (willRemove !== null) board[willRemove] = BOT;
+
+                maxScore = Math.max(score, maxScore);
+                alpha = Math.max(alpha, score);
+                if (beta <= alpha) break;
+            }
+        }
+        return maxScore;
+    } else {
+        let minScore = Infinity;
+
+        // 플레이어의 오래된 돌 제거 시뮬레이션
+        let willRemove = null;
+        if (T3.Stage === 4 && playerStones.length >= 3) {
+            willRemove = playerStones[0];
+        }
+
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === EMPTY) {
+                board[i] = PLAYER;
+                const newPlayerStones = [...playerStones.slice(willRemove !== null ? 1 : 0), i];
+
+                if (willRemove !== null) board[willRemove] = EMPTY;
+
+                const score = minimax(board, depth + 1, true, alpha, beta, botStones, newPlayerStones);
+
+                board[i] = EMPTY;
+                if (willRemove !== null) board[willRemove] = PLAYER;
+
+                minScore = Math.min(score, minScore);
+                beta = Math.min(beta, score);
+                if (beta <= alpha) break;
+            }
+        }
+        return minScore;
+    }
+}
+
+// ==================== 타이머 관련 ====================
+
+// 플레이어 타이머 시작
+function startPlayerTimer() {
+    if (T3.Difficulty !== 5) return;
+
+    T3.TimeLeft = 5.0;
+    updateTimerDisplay();
+
+    T3.Timer = setInterval(() => {
+        T3.TimeLeft -= 0.1;
+        updateTimerDisplay();
+
+        if (T3.TimeLeft <= 0) {
+            // 시간 초과! 랜덤 위치에 강제 배치
+            stopPlayerTimer();
+            forceRandomMove();
+        }
+    }, 100);
+}
+
+// 플레이어 타이머 정지
+function stopPlayerTimer() {
+    if (T3.Timer) {
+        clearInterval(T3.Timer);
+        T3.Timer = null;
+    }
+}
+
+// 타이머 UI 업데이트
+function updateTimerDisplay() {
+    const timerDisplay = document.getElementById('timer-display');
+    if (!timerDisplay) return;
+
+    const time = Math.max(0, T3.TimeLeft).toFixed(1);
+    timerDisplay.textContent = `⏱️ ${time}s`;
+
+    // 시간에 따른 색상 변경
+    if (T3.TimeLeft <= 2) {
+        timerDisplay.classList.add('danger');
+        timerDisplay.classList.remove('warning');
+    } else if (T3.TimeLeft <= 3) {
+        timerDisplay.classList.add('warning');
+        timerDisplay.classList.remove('danger');
+    } else {
+        timerDisplay.classList.remove('warning', 'danger');
+    }
+}
+
+// 시간 초과 시 강제 랜덤 배치
+function forceRandomMove() {
+    if (!T3.Start || T3.Turn !== 'P') return;
+
+    showMessage('⏰ 시간 초과! 랜덤 배치!', 'warning');
+
+    const emptySpots = [];
+    for (let i = 0; i < 9; i++) {
+        if (T3.Board[i] === EMPTY) {
+            emptySpots.push(i);
+        }
+    }
+
+    if (emptySpots.length > 0) {
+        const randomIndex = emptySpots[Math.floor(Math.random() * emptySpots.length)];
+
+        // 기존 playerMove 로직 실행
+        if (T3.Stage === 4 && T3.PlayerStones.length >= 3) {
+            const removeIndex = T3.PlayerStones.shift();
+            T3.Board[removeIndex] = EMPTY;
+        }
+
+        T3.Board[randomIndex] = PLAYER;
+        T3.PlayerStones.push(randomIndex);
+        T3.TurnCount++;
+
+        renderBoard();
+        document.getElementById('turn-count').textContent = `턴: ${Math.ceil(T3.TurnCount / 2)}`;
+
+        const result = checkWinner();
+        if (result) {
+            endGame(result);
+            return;
+        }
+
+        T3.Turn = 'B';
+        updateTurnDisplay();
+        showMessage('😈 Bot의 차례...', '');
+        setTimeout(() => botTurn(), 400);
+    }
 }
 
 // 승리 가능한 수 찾기
@@ -308,7 +533,17 @@ function endGame(result) {
         const scoreResult = calculateScore(true, T3.Difficulty, turnCount);
         userStats.wins++;
         userStats.totalScore += scoreResult.score;
-        showMessage(`🎉 승리! +${scoreResult.score}점`, 'win');
+
+        // HELL 모드 클리어 시 특별 메시지
+        if (T3.Difficulty === 5) {
+            showMessage(`🔥 HELL 클리어! +${scoreResult.score}점 🔥`, 'win');
+            // HELL 클리어 상태 저장
+            if (typeof saveHellClearedToFirestore === 'function' && currentUser) {
+                saveHellClearedToFirestore();
+            }
+        } else {
+            showMessage(`🎉 승리! +${scoreResult.score}점`, 'win');
+        }
     } else if (result === 'B') {
         const scoreResult = calculateScore(false, T3.Difficulty, turnCount);
         userStats.losses++;
@@ -337,25 +572,71 @@ function endGame(result) {
 
 // 점수 계산
 function calculateScore(isWin, difficulty, turnCount) {
-    const baseScore = difficulty * 10;
+    // HELL 모드는 점수 2배
+    const multiplier = difficulty === 5 ? 2 : 1;
+    const baseScore = difficulty * 10 * multiplier;
     let finalScore;
 
     if (isWin) {
         finalScore = Math.max(1, Math.round(baseScore - turnCount));
     } else {
-        finalScore = -1 * (4 - difficulty);
+        // 패배 시 감점
+        const lossScores = {
+            1: -5, // EASY
+            2: -4, // NORMAL
+            3: -3, // HARD
+            4: -2, // INFINITE
+            5: 0, // HELL
+        };
+        finalScore = lossScores[difficulty];
     }
 
     return { score: finalScore };
 }
 
+// 재시작버튼 쿨다운 상태
+let restartCooldown = false;
+
 // 게임 리셋
 function resetGame() {
+    if (restartCooldown) return;
+
+    stopPlayerTimer();
     startGame(T3.Difficulty);
+
+    // 3초 쿨다운 시작
+    startRestartCooldown();
+}
+
+// 재시작버튼 쿨다운 타이머
+function startRestartCooldown() {
+    const restartBtn = document.getElementById('restart-btn');
+    if (!restartBtn) return;
+
+    restartCooldown = true;
+    restartBtn.disabled = true;
+    let timeLeft = 3;
+
+    restartBtn.textContent = `WAIT ${timeLeft}s`;
+    restartBtn.classList.add('cooldown');
+
+    const cooldownInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+            restartBtn.textContent = `WAIT ${timeLeft}s`;
+        } else {
+            clearInterval(cooldownInterval);
+            restartBtn.textContent = 'RESTART';
+            restartBtn.disabled = false;
+            restartBtn.classList.remove('cooldown');
+            restartCooldown = false;
+        }
+    }, 1000);
 }
 
 // 메뉴로 돌아가기
 function goToMenu() {
+    stopPlayerTimer();
     T3.Start = false;
     document.getElementById('game').classList.add('hidden');
     document.getElementById('menu').classList.remove('hidden');

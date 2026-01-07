@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>틱택토 게임</title>
+        <title>Tik-Tak-Toe</title>
         <link rel="stylesheet" href="css/styles.css" />
     </head>
     <body>
@@ -26,8 +26,12 @@
                     <button onclick="startGame(2)">LEVEL 2 - NORMAL</button>
                     <button onclick="startGame(3)">LEVEL 3 - HARD</button>
                     <button onclick="startGame(4)">LEVEL 4 - INFINITE</button>
+                    <button onclick="startGame(5)" class="hell-btn">🔥 LEVEL 5 - HELL 🔥</button>
                 </div>
                 <p class="hint">LEVEL 4: 돌이 3개 이상 시 먼저 둔 순서대로 돌이 사라집니다</p>
+                <p class="hint hell-hint">
+                    LEVEL 5: ☠️ 도전난이도 + 인피니트 모드<br />패배 시 감점 없음<br />클리어 시 순위창 전용 이펙트 추가
+                </p>
             </div>
 
             <div id="game" class="game hidden">
@@ -52,7 +56,7 @@
                 <div id="message" class="message"></div>
 
                 <div class="game-buttons">
-                    <button onclick="resetGame()">RESTART</button>
+                    <button id="restart-btn" onclick="resetGame()">RESTART</button>
                     <button onclick="goToMenu()">MENU</button>
                 </div>
             </div>
