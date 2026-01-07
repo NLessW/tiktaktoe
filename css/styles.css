@@ -1,1017 +1,1256 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 @font-face {
-    font-family: 'DungGeunMo';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "DungGeunMo";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Press Start 2P', 'DungGeunMo', cursive;
-    background: #0a0a0a;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
+  font-family: "Press Start 2P", "DungGeunMo", cursive;
+  background: #0a0a0a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  padding-bottom: 60px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* 한글 텍스트용 클래스 */
 .korean-text {
-    font-family: 'DungGeunMo', cursive;
-    font-size: 1rem;
-    letter-spacing: 0;
+  font-family: "DungGeunMo", cursive;
+  font-size: 1rem;
+  letter-spacing: 0;
 }
 
 /* CRT 스캔라인 효과 */
 body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.15),
-        rgba(0, 0, 0, 0.15) 1px,
-        transparent 1px,
-        transparent 2px
-    );
-    pointer-events: none;
-    z-index: 1000;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1000;
 }
 
 /* 배경 그리드 */
 body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, rgba(255, 0, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    pointer-events: none;
-    z-index: -1;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      rgba(255, 0, 255, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .container {
-    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-    border: 4px solid #ff00ff;
-    border-radius: 0;
-    padding: 30px;
-    box-shadow: 0 0 20px #ff00ff, 0 0 40px rgba(255, 0, 255, 0.3), inset 0 0 60px rgba(0, 255, 255, 0.1);
-    text-align: center;
-    max-width: 480px;
-    width: 100%;
-    position: relative;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  border: 4px solid #ff00ff;
+  border-radius: 0;
+  padding: 30px;
+  padding-bottom: 40px;
+  box-shadow: 0 0 20px #ff00ff, 0 0 40px rgba(255, 0, 255, 0.3),
+    inset 0 0 60px rgba(0, 255, 255, 0.1);
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+  margin: 20px auto;
 }
 
 .container::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #00ffff);
-    background-size: 400% 400%;
-    z-index: -1;
-    animation: borderGlow 3s ease infinite;
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #00ffff);
+  background-size: 400% 400%;
+  z-index: -1;
+  animation: borderGlow 3s ease infinite;
+  pointer-events: none; /* 클릭 이벤트 차단 방지 */
 }
 
 @keyframes borderGlow {
-    0%,
-    100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 h1 {
-    color: #00ffff;
-    margin-bottom: 25px;
-    font-size: 1.8rem;
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-    animation: titleFlicker 2s infinite;
-    letter-spacing: 2px;
+  color: #00ffff;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+  animation: titleFlicker 2s infinite;
+  letter-spacing: 2px;
 }
 
 @keyframes titleFlicker {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    92% {
-        opacity: 1;
-    }
-    93% {
-        opacity: 0.8;
-    }
-    94% {
-        opacity: 1;
-    }
-    95% {
-        opacity: 0.9;
-    }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.8;
+  }
+  94% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0.9;
+  }
 }
 
 h2 {
-    color: #ff00ff;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-    text-shadow: 0 0 10px #ff00ff;
-    letter-spacing: 1px;
+  color: #ff00ff;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  text-shadow: 0 0 10px #ff00ff;
+  letter-spacing: 1px;
 }
 
 /* Menu Styles */
 .menu {
-    padding: 20px 0;
+  padding: 20px 0;
 }
 
 .difficulty-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .difficulty-buttons button {
-    padding: 18px 30px;
-    font-size: 0.7rem;
-    font-family: 'Press Start 2P', cursive;
-    border: 3px solid #00ff00;
-    cursor: pointer;
-    transition: all 0.1s ease;
-    background: transparent;
-    color: #00ff00;
-    text-shadow: 0 0 10px #00ff00;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 20px rgba(0, 255, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-    letter-spacing: 1px;
+  padding: 18px 30px;
+  font-size: 0.7rem;
+  font-family: "Press Start 2P", cursive;
+  border: 3px solid #00ff00;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  background: transparent;
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 20px rgba(0, 255, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 1px;
 }
 
 .difficulty-buttons button::before {
-    content: '▶ ';
-    opacity: 0;
-    transition: opacity 0.1s;
+  content: "▶ ";
+  opacity: 0;
+  transition: opacity 0.1s;
 }
 
 .difficulty-buttons button:hover {
-    background: #00ff00;
-    color: #000;
-    text-shadow: none;
-    box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
-    transform: scale(1.02);
+  background: #00ff00;
+  color: #000;
+  text-shadow: none;
+  box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+  transform: scale(1.02);
 }
 
 .difficulty-buttons button:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 .difficulty-buttons button:active {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 .hint {
-    margin-top: 20px;
-    font-family: 'DungGeunMo', cursive;
-    font-size: 1rem;
-    color: #ffff00;
-    text-shadow: 0 0 5px #ffff00;
-    line-height: 1.8;
-    letter-spacing: 0;
+  margin-top: 20px;
+  font-family: "DungGeunMo", cursive;
+  font-size: 1rem;
+  color: #ffff00;
+  text-shadow: 0 0 5px #ffff00;
+  line-height: 1.8;
+  letter-spacing: 0;
 }
 
 .hell-hint {
-    color: #ff4444;
-    text-shadow: 0 0 5px #ff4444, 0 0 10px #ff0000;
-    animation: hell-pulse 1s ease-in-out infinite alternate;
+  color: #ff4444;
+  text-shadow: 0 0 5px #ff4444, 0 0 10px #ff0000;
+  animation: hell-pulse 1s ease-in-out infinite alternate;
 }
 
 /* HELL 모드 버튼 */
 .hell-btn {
-    background: linear-gradient(180deg, #ff0000 0%, #8b0000 50%, #ff0000 100%) !important;
-    border-color: #ff4444 !important;
-    color: #ffff00 !important;
-    text-shadow: 0 0 10px #ff0000 !important;
-    animation: hell-glow 0.5s ease-in-out infinite alternate !important;
+  background: linear-gradient(
+    180deg,
+    #ff0000 0%,
+    #8b0000 50%,
+    #ff0000 100%
+  ) !important;
+  border-color: #ff4444 !important;
+  color: #ffff00 !important;
+  text-shadow: 0 0 10px #ff0000 !important;
+  animation: hell-glow 0.5s ease-in-out infinite alternate !important;
 }
 
 .hell-btn:hover {
-    box-shadow: 0 0 30px #ff0000, 0 0 50px #ff4444, inset 0 0 20px rgba(255, 0, 0, 0.3) !important;
-    transform: scale(1.05);
+  box-shadow: 0 0 30px #ff0000, 0 0 50px #ff4444,
+    inset 0 0 20px rgba(255, 0, 0, 0.3) !important;
+  transform: scale(1.05);
 }
 
 @keyframes hell-glow {
-    0% {
-        box-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000;
-    }
-    100% {
-        box-shadow: 0 0 20px #ff4444, 0 0 40px #ff0000, 0 0 60px #8b0000;
-    }
+  0% {
+    box-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000;
+  }
+  100% {
+    box-shadow: 0 0 20px #ff4444, 0 0 40px #ff0000, 0 0 60px #8b0000;
+  }
 }
 
 @keyframes hell-pulse {
-    0% {
-        opacity: 0.7;
-    }
-    100% {
-        opacity: 1;
-        text-shadow: 0 0 10px #ff4444, 0 0 20px #ff0000;
-    }
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px #ff4444, 0 0 20px #ff0000;
+  }
 }
 
 /* Game Styles */
 .game {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 .game-info {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid #00ffff;
-    font-size: 0.5rem;
-    color: #00ffff;
-    text-shadow: 0 0 5px #00ffff;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #00ffff;
+  font-size: 0.5rem;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
 /* 타이머 스타일 */
 .timer-display {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.6rem;
-    color: #00ff00;
-    text-shadow: 0 0 5px #00ff00;
-    padding: 4px 8px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid #00ff00;
-    border-radius: 4px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.6rem;
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #00ff00;
+  border-radius: 4px;
 }
 
 .timer-display.warning {
-    color: #ffff00;
-    border-color: #ffff00;
-    text-shadow: 0 0 5px #ffff00;
-    animation: timer-warning 0.5s ease-in-out infinite;
+  color: #ffff00;
+  border-color: #ffff00;
+  text-shadow: 0 0 5px #ffff00;
+  animation: timer-warning 0.5s ease-in-out infinite;
 }
 
 .timer-display.danger {
-    color: #ff0000;
-    border-color: #ff0000;
-    text-shadow: 0 0 10px #ff0000;
-    animation: timer-danger 0.2s ease-in-out infinite;
+  color: #ff0000;
+  border-color: #ff0000;
+  text-shadow: 0 0 10px #ff0000;
+  animation: timer-danger 0.2s ease-in-out infinite;
 }
 
 @keyframes timer-warning {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.6;
-    }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 @keyframes timer-danger {
-    0%,
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.5;
-        transform: scale(1.1);
-    }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
 }
 
 .board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    max-width: 340px;
-    margin: 0 auto 25px;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 3px solid #ff00ff;
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5), inset 0 0 30px rgba(255, 0, 255, 0.2);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 340px;
+  margin: 0 auto 25px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 3px solid #ff00ff;
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5),
+    inset 0 0 30px rgba(255, 0, 255, 0.2);
 }
 
 .cell {
-    aspect-ratio: 1;
-    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
-    border: 2px solid #444;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.5rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+  border: 2px solid #444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
 .cell:hover {
-    border-color: #00ffff;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 255, 255, 0.5);
-    background: linear-gradient(135deg, #1f1f3a 0%, #151525 100%);
+  border-color: #00ffff;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 255, 255, 0.5);
+  background: linear-gradient(135deg, #1f1f3a 0%, #151525 100%);
 }
 
 .cell.player {
-    background: linear-gradient(135deg, #001a33 0%, #003366 100%);
-    border-color: #00ffff;
-    color: #00ffff;
-    text-shadow: 0 0 20px #00ffff;
-    box-shadow: inset 0 0 30px rgba(0, 255, 255, 0.3), 0 0 20px rgba(0, 255, 255, 0.5);
-    animation: playerPlace 0.3s ease;
+  background: linear-gradient(135deg, #001a33 0%, #003366 100%);
+  border-color: #00ffff;
+  color: #00ffff;
+  text-shadow: 0 0 20px #00ffff;
+  box-shadow: inset 0 0 30px rgba(0, 255, 255, 0.3),
+    0 0 20px rgba(0, 255, 255, 0.5);
+  animation: playerPlace 0.3s ease;
 }
 
 .cell.bot {
-    background: linear-gradient(135deg, #330011 0%, #660022 100%);
-    border-color: #ff0066;
-    color: #ff0066;
-    text-shadow: 0 0 20px #ff0066;
-    box-shadow: inset 0 0 30px rgba(255, 0, 102, 0.3), 0 0 20px rgba(255, 0, 102, 0.5);
-    animation: botPlace 0.3s ease;
+  background: linear-gradient(135deg, #330011 0%, #660022 100%);
+  border-color: #ff0066;
+  color: #ff0066;
+  text-shadow: 0 0 20px #ff0066;
+  box-shadow: inset 0 0 30px rgba(255, 0, 102, 0.3),
+    0 0 20px rgba(255, 0, 102, 0.5);
+  animation: botPlace 0.3s ease;
 }
 
 .cell.fade-out {
-    animation: fadeOut 0.5s ease forwards;
+  animation: fadeOut 0.5s ease forwards;
 }
 
 @keyframes playerPlace {
-    0% {
-        transform: scale(0);
-        box-shadow: 0 0 0 rgba(0, 255, 255, 0);
-    }
-    50% {
-        transform: scale(1.1);
-        box-shadow: 0 0 50px rgba(0, 255, 255, 0.8);
-    }
-    100% {
-        transform: scale(1);
-    }
+  0% {
+    transform: scale(0);
+    box-shadow: 0 0 0 rgba(0, 255, 255, 0);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes botPlace {
-    0% {
-        transform: scale(0);
-        box-shadow: 0 0 0 rgba(255, 0, 102, 0);
-    }
-    50% {
-        transform: scale(1.1);
-        box-shadow: 0 0 50px rgba(255, 0, 102, 0.8);
-    }
-    100% {
-        transform: scale(1);
-    }
+  0% {
+    transform: scale(0);
+    box-shadow: 0 0 0 rgba(255, 0, 102, 0);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 50px rgba(255, 0, 102, 0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeOut {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0.2;
-        transform: scale(0.7);
-        filter: blur(2px);
-    }
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+    filter: blur(2px);
+  }
 }
 
 .message {
-    min-height: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'DungGeunMo', cursive;
-    font-size: 1.1rem;
-    color: #fff;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 2px solid #444;
-    background: rgba(0, 0, 0, 0.5);
-    line-height: 1.6;
-    letter-spacing: 0;
+  min-height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "DungGeunMo", cursive;
+  font-size: 1.1rem;
+  color: #fff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 2px solid #444;
+  background: rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
+  letter-spacing: 0;
 }
 
 .message.win {
-    background: rgba(0, 255, 0, 0.2);
-    border-color: #00ff00;
-    color: #00ff00;
-    text-shadow: 0 0 10px #00ff00;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-    animation: winPulse 0.5s ease infinite alternate;
+  background: rgba(0, 255, 0, 0.2);
+  border-color: #00ff00;
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  animation: winPulse 0.5s ease infinite alternate;
 }
 
 @keyframes winPulse {
-    from {
-        box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-    }
-    to {
-        box-shadow: 0 0 40px rgba(0, 255, 0, 0.8);
-    }
+  from {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  }
+  to {
+    box-shadow: 0 0 40px rgba(0, 255, 0, 0.8);
+  }
 }
 
 .message.lose {
-    background: rgba(255, 0, 0, 0.2);
-    border-color: #ff0000;
-    color: #ff0000;
-    text-shadow: 0 0 10px #ff0000;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  background: rgba(255, 0, 0, 0.2);
+  border-color: #ff0000;
+  color: #ff0000;
+  text-shadow: 0 0 10px #ff0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
 }
 
 .message.draw {
-    background: rgba(255, 255, 0, 0.2);
-    border-color: #ffff00;
-    color: #ffff00;
-    text-shadow: 0 0 10px #ffff00;
-    box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+  background: rgba(255, 255, 0, 0.2);
+  border-color: #ffff00;
+  color: #ffff00;
+  text-shadow: 0 0 10px #ffff00;
+  box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
 }
 
 .game-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
 }
 
 .game-buttons button {
-    padding: 15px 25px;
-    font-size: 0.55rem;
-    font-family: 'Press Start 2P', cursive;
-    border: 2px solid #ff00ff;
-    cursor: pointer;
-    transition: all 0.1s ease;
-    background: transparent;
-    color: #ff00ff;
-    text-shadow: 0 0 5px #ff00ff;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+  padding: 15px 25px;
+  font-size: 0.55rem;
+  font-family: "Press Start 2P", cursive;
+  border: 2px solid #ff00ff;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  background: transparent;
+  color: #ff00ff;
+  text-shadow: 0 0 5px #ff00ff;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
 }
 
 .game-buttons button:hover {
-    background: #ff00ff;
-    color: #000;
-    text-shadow: none;
-    box-shadow: 0 0 25px #ff00ff;
+  background: #ff00ff;
+  color: #000;
+  text-shadow: none;
+  box-shadow: 0 0 25px #ff00ff;
 }
 
 .game-buttons button.cooldown {
-    border-color: #666;
-    color: #666;
-    text-shadow: none;
-    box-shadow: none;
-    cursor: not-allowed;
-    opacity: 0.6;
+  border-color: #666;
+  color: #666;
+  text-shadow: none;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .game-buttons button.cooldown:hover {
-    background: transparent;
-    color: #666;
-    box-shadow: none;
+  background: transparent;
+  color: #666;
+  box-shadow: none;
 }
 
 /* Stats Styles */
 .stats {
-    margin-top: 25px;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid #ffff00;
-    box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
+  margin-top: 25px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #ffff00;
+  box-shadow: 0 0 15px rgba(255, 255, 0, 0.3);
 }
 
 .stats h3 {
-    margin-bottom: 15px;
-    color: #ffff00;
-    font-size: 0.7rem;
-    text-shadow: 0 0 10px #ffff00;
+  margin-bottom: 15px;
+  color: #ffff00;
+  font-size: 0.7rem;
+  text-shadow: 0 0 10px #ffff00;
 }
 
 .stats p {
-    color: #aaa;
-    margin: 8px 0;
-    font-size: 0.5rem;
-    line-height: 1.8;
+  color: #aaa;
+  margin: 8px 0;
+  font-size: 0.5rem;
+  line-height: 1.8;
 }
 
 .stats span {
-    color: #00ff00;
-    text-shadow: 0 0 5px #00ff00;
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
 }
 
 /* Hidden class */
 .hidden {
-    display: none !important;
+  display: none !important;
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+    padding-bottom: 120px;
+    align-items: flex-start;
+  }
+
+  .container {
+    padding: 20px 15px;
+    padding-bottom: 60px;
+    max-width: 100%;
+    margin: 10px auto 30px;
+  }
+
+  h1 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+
+  .cell {
+    font-size: 2rem;
+  }
+
+  .game-info {
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.5rem;
+  }
+
+  .difficulty-buttons button {
+    padding: 15px 20px;
+    font-size: 0.6rem;
+  }
+
+  .game-buttons button {
+    padding: 12px 18px;
+    font-size: 0.5rem;
+  }
+
+  /* 인증 섹션 모바일 최적화 */
+  .auth-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .auth-btn {
+    font-size: 0.5rem;
+    padding: 8px 15px;
+  }
+
+  .user-info {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #user-nickname {
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .logout-btn {
+    font-size: 0.5rem;
+    padding: 8px 15px;
+    width: 100%;
+  }
+
+  /* 순위 모달 모바일 최적화 */
+  .modal-content {
+    width: 95%;
+    padding: 20px 15px;
+    max-height: 85vh;
+  }
+
+  .ranking-modal-content {
+    max-width: 100%;
+    max-height: 85vh;
+    padding: 20px 12px;
+  }
+
+  .ranking-title {
+    font-size: 0.65rem;
+    margin-bottom: 15px;
+  }
+
+  .ranking-item {
+    padding: 10px 12px;
+  }
+
+  .ranking-item .rank {
+    font-size: 0.85rem;
+    min-width: 30px;
+  }
+
+  .ranking-item .nickname {
+    font-size: 0.8rem;
+  }
+
+  .ranking-item .score {
+    font-size: 0.75rem;
+  }
+
+  .ranking-stats {
+    padding-left: 40px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .ranking-stats .record,
+  .ranking-stats .winrate {
+    font-size: 0.7rem;
+  }
+
+  /* 페이지네이션 모바일 최적화 */
+  .ranking-pagination {
+    gap: 10px;
+  }
+
+  .page-btn {
+    padding: 8px 12px;
+    font-size: 0.45rem;
+  }
+
+  .page-info {
+    font-size: 0.5rem;
+    min-width: 50px;
+  }
+
+  /* 통계 섹션 모바일 최적화 */
+  .stats {
+    margin-top: 20px;
+    padding: 15px;
+  }
+
+  .stats h3 {
+    font-size: 0.7rem;
+  }
+
+  .stats p {
+    font-size: 0.6rem;
+  }
+
+  .ranking-toggle-btn {
+    font-size: 0.5rem;
+    padding: 10px 15px;
+  }
+
+  /* 모달 닫기 버튼 */
+  .modal-close {
+    font-size: 1.3rem;
+    width: 35px;
+    height: 35px;
+  }
+
+  /* 인증 폼 모바일 최적화 */
+  .auth-tabs {
+    gap: 10px;
+  }
+
+  .auth-tab {
+    font-size: 0.65rem;
+    padding: 10px;
+  }
+
+  .auth-input {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .auth-submit {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .google-btn {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .auth-message {
+    font-size: 0.8rem;
+  }
+
+  /* 힌트 텍스트 모바일 최적화 */
+  .hint {
+    font-size: 0.45rem;
+    line-height: 1.6;
+  }
+
+  .hell-hint {
+    font-size: 0.45rem;
+  }
+
+  /* 메시지 모바일 최적화 */
+  .message {
+    font-size: 0.6rem;
+    padding: 10px;
+    margin: 15px 0;
+  }
+
+  /* 순위 뱃지 모바일 최적화 */
+  .rank-badge {
+    font-size: 0.85rem;
+  }
+
+  .hell-badge {
+    font-size: 0.75rem;
+  }
+}
+
 @media (max-width: 480px) {
-    .container {
-        padding: 20px 15px;
-    }
+  h1 {
+    font-size: 1rem;
+  }
 
-    h1 {
-        font-size: 1.3rem;
-    }
+  .cell {
+    font-size: 1.8rem;
+  }
 
-    .cell {
-        font-size: 2rem;
-    }
+  .ranking-item .rank {
+    font-size: 0.75rem;
+    min-width: 25px;
+  }
 
-    .game-info {
-        flex-direction: column;
-        gap: 8px;
-    }
+  .ranking-item .nickname {
+    font-size: 0.7rem;
+  }
 
-    .difficulty-buttons button {
-        padding: 15px 20px;
-        font-size: 0.6rem;
-    }
+  .ranking-item .score {
+    font-size: 0.65rem;
+  }
 
-    .game-buttons button {
-        padding: 12px 18px;
-        font-size: 0.5rem;
-    }
+  .ranking-stats {
+    padding-left: 30px;
+  }
+
+  .ranking-stats .record,
+  .ranking-stats .winrate {
+    font-size: 0.6rem;
+  }
 }
 
 /* ==================== 인증 섹션 스타일 ==================== */
 .auth-section {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 15px;
-    gap: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px;
 }
 
 .auth-btn {
-    padding: 10px 20px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.6rem;
-    background: transparent;
-    border: 2px solid #00ff00;
-    color: #00ff00;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-shadow: 0 0 5px #00ff00;
+  padding: 10px 20px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.6rem;
+  background: transparent;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-shadow: 0 0 5px #00ff00;
 }
 
 .auth-btn:hover {
-    background: #00ff00;
-    color: #000;
-    box-shadow: 0 0 20px #00ff00;
+  background: #00ff00;
+  color: #000;
+  box-shadow: 0 0 20px #00ff00;
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 #user-nickname {
-    font-family: 'DungGeunMo', cursive;
-    font-size: 1rem;
-    color: #00ffff;
-    text-shadow: 0 0 5px #00ffff;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  font-family: "DungGeunMo", cursive;
+  font-size: 1rem;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 /* 순위 뱃지 스타일 */
 .rank-badge {
-    font-size: 1rem;
-    display: inline-flex;
-    align-items: center;
-    vertical-align: middle;
-    line-height: 1;
-    animation: badge-glow 1.5s ease-in-out infinite alternate;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  line-height: 1;
+  animation: badge-glow 1.5s ease-in-out infinite alternate;
 }
 
 .rank-badge.rank-1 {
-    filter: drop-shadow(0 0 8px gold);
-    animation: crown-glow 1s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 8px gold);
+  animation: crown-glow 1s ease-in-out infinite alternate;
 }
 
 .rank-badge.rank-2 {
-    filter: drop-shadow(0 0 6px silver);
+  filter: drop-shadow(0 0 6px silver);
 }
 
 .rank-badge.rank-3 {
-    filter: drop-shadow(0 0 6px #cd7f32);
+  filter: drop-shadow(0 0 6px #cd7f32);
 }
 
 @keyframes crown-glow {
-    0% {
-        filter: drop-shadow(0 0 5px gold);
-        transform: scale(1);
-    }
-    100% {
-        filter: drop-shadow(0 0 15px gold) drop-shadow(0 0 25px orange);
-        transform: scale(1.1);
-    }
+  0% {
+    filter: drop-shadow(0 0 5px gold);
+    transform: scale(1);
+  }
+  100% {
+    filter: drop-shadow(0 0 15px gold) drop-shadow(0 0 25px orange);
+    transform: scale(1.1);
+  }
 }
 
 @keyframes badge-glow {
-    0% {
-        filter: drop-shadow(0 0 3px currentColor);
-    }
-    100% {
-        filter: drop-shadow(0 0 8px currentColor);
-    }
+  0% {
+    filter: drop-shadow(0 0 3px currentColor);
+  }
+  100% {
+    filter: drop-shadow(0 0 8px currentColor);
+  }
 }
 
 .logout-btn {
-    padding: 8px 15px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.5rem;
-    background: transparent;
-    border: 2px solid #ff0066;
-    color: #ff0066;
-    cursor: pointer;
-    transition: all 0.2s;
+  padding: 8px 15px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.5rem;
+  background: transparent;
+  border: 2px solid #ff0066;
+  color: #ff0066;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .logout-btn:hover {
-    background: #ff0066;
-    color: #000;
-    box-shadow: 0 0 15px #ff0066;
+  background: #ff0066;
+  color: #000;
+  box-shadow: 0 0 15px #ff0066;
 }
 
 /* ==================== 순위 모달 스타일 ==================== */
 .ranking-modal-content {
-    max-width: 450px;
-    max-height: 80vh;
-    overflow-y: auto;
+  max-width: 450px;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .ranking-title {
-    color: #00ffff;
-    font-size: 0.8rem;
-    text-shadow: 0 0 10px #00ffff;
-    margin-bottom: 20px;
-    text-align: center;
+  color: #00ffff;
+  font-size: 0.8rem;
+  text-shadow: 0 0 10px #00ffff;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .ranking-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .ranking-item {
-    display: flex;
-    flex-direction: column;
-    padding: 12px 15px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid #333;
-    transition: all 0.2s;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 15px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #333;
+  transition: all 0.2s;
+  gap: 8px;
 }
 
 .ranking-item:hover {
-    border-color: #00ffff;
-    background: rgba(0, 255, 255, 0.1);
+  border-color: #00ffff;
+  background: rgba(0, 255, 255, 0.1);
 }
 
 .ranking-item.current-user {
-    border-color: #ffff00;
-    background: rgba(255, 255, 0, 0.1);
+  border-color: #ffff00;
+  background: rgba(255, 255, 0, 0.1);
 }
 
 .ranking-main {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .ranking-item .rank {
-    font-size: 1rem;
-    min-width: 35px;
+  font-size: 1rem;
+  min-width: 35px;
 }
 
 .ranking-item .nickname {
-    font-family: 'DungGeunMo', cursive;
-    font-size: 0.95rem;
-    color: #fff;
-    flex: 1;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    gap: 3px;
+  font-family: "DungGeunMo", cursive;
+  font-size: 0.95rem;
+  color: #fff;
+  flex: 1;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }
 
 /* HELL 클리어 뱃지 */
 .hell-badge {
-    font-size: 0.9rem;
-    animation: hell-fire 0.5s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 3px #ff4400);
+  font-size: 0.9rem;
+  animation: hell-fire 0.5s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 3px #ff4400);
 }
 
 @keyframes hell-fire {
-    0% {
-        transform: scale(1) translateY(0);
-        filter: drop-shadow(0 0 3px #ff4400);
-    }
-    100% {
-        transform: scale(1.1) translateY(-1px);
-        filter: drop-shadow(0 0 6px #ff6600) drop-shadow(0 0 10px #ff0000);
-    }
+  0% {
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 0 3px #ff4400);
+  }
+  100% {
+    transform: scale(1.1) translateY(-1px);
+    filter: drop-shadow(0 0 6px #ff6600) drop-shadow(0 0 10px #ff0000);
+  }
 }
 
 /* HELL 클리어 유저 하이라이트 */
 .ranking-item.hell-cleared {
-    border-color: #ff4400;
-    background: linear-gradient(135deg, rgba(255, 68, 0, 0.1) 0%, rgba(139, 0, 0, 0.1) 100%);
+  border-color: #ff4400;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 68, 0, 0.1) 0%,
+    rgba(139, 0, 0, 0.1) 100%
+  );
 }
 
 .ranking-item.hell-cleared .nickname {
-    color: #ffcc00;
-    text-shadow: 0 0 5px #ff4400;
+  color: #ffcc00;
+  text-shadow: 0 0 5px #ff4400;
 }
 
 .ranking-item .score {
-    font-family: 'DungGeunMo', cursive;
-    font-size: 0.9rem;
-    color: #00ff00;
-    text-shadow: 0 0 5px #00ff00;
+  font-family: "DungGeunMo", cursive;
+  font-size: 0.9rem;
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
 }
 
 .ranking-stats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 45px;
 }
 
 .ranking-stats .record {
-    font-family: 'DungGeunMo', cursive;
-    font-size: 0.8rem;
-    color: #aaa;
+  font-family: "DungGeunMo", cursive;
+  font-size: 0.8rem;
+  color: #aaa;
 }
 
 .ranking-stats .winrate {
-    font-family: 'DungGeunMo', cursive;
-    font-size: 0.8rem;
-    color: #ff00ff;
-    text-shadow: 0 0 5px #ff00ff;
+  font-family: "DungGeunMo", cursive;
+  font-size: 0.8rem;
+  color: #ff00ff;
+  text-shadow: 0 0 5px #ff00ff;
 }
 
 .no-ranking {
-    font-family: 'DungGeunMo', cursive;
-    font-size: 0.9rem;
-    color: #666;
-    text-align: center;
-    padding: 20px;
+  font-family: "DungGeunMo", cursive;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  padding: 20px;
 }
 
 /* 순위 토글 버튼 */
 .ranking-toggle-btn {
-    margin-top: 15px;
-    padding: 12px 20px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.55rem;
-    background: transparent;
-    border: 2px solid #00ffff;
-    color: #00ffff;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-shadow: 0 0 5px #00ffff;
-    width: 100%;
+  margin-top: 15px;
+  padding: 12px 20px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.55rem;
+  background: transparent;
+  border: 2px solid #00ffff;
+  color: #00ffff;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-shadow: 0 0 5px #00ffff;
+  width: 100%;
 }
 
 .ranking-toggle-btn:hover {
-    background: #00ffff;
-    color: #000;
-    text-shadow: none;
-    box-shadow: 0 0 20px #00ffff;
+  background: #00ffff;
+  color: #000;
+  text-shadow: none;
+  box-shadow: 0 0 20px #00ffff;
 }
 
 /* 페이지네이션 */
 .ranking-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #333;
 }
 
 .page-btn {
-    padding: 10px 15px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.5rem;
-    background: transparent;
-    border: 2px solid #ff00ff;
-    color: #ff00ff;
-    cursor: pointer;
-    transition: all 0.2s;
+  padding: 10px 15px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.5rem;
+  background: transparent;
+  border: 2px solid #ff00ff;
+  color: #ff00ff;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .page-btn:hover:not(:disabled) {
-    background: #ff00ff;
-    color: #000;
-    box-shadow: 0 0 15px #ff00ff;
+  background: #ff00ff;
+  color: #000;
+  box-shadow: 0 0 15px #ff00ff;
 }
 
 .page-btn:disabled {
-    border-color: #444;
-    color: #444;
-    cursor: not-allowed;
+  border-color: #444;
+  color: #444;
+  cursor: not-allowed;
 }
 
 .page-info {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.6rem;
-    color: #fff;
-    min-width: 60px;
-    text-align: center;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.6rem;
+  color: #fff;
+  min-width: 60px;
+  text-align: center;
 }
 
 /* ==================== 모달 스타일 ==================== */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
 .modal-content {
-    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-    border: 3px solid #ff00ff;
-    padding: 30px;
-    max-width: 400px;
-    width: 90%;
-    position: relative;
-    box-shadow: 0 0 30px rgba(255, 0, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.1);
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  border: 3px solid #ff00ff;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 0 30px rgba(255, 0, 255, 0.5),
+    inset 0 0 30px rgba(0, 255, 255, 0.1);
 }
 
 .modal-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    color: #ff0066;
-    cursor: pointer;
-    transition: all 0.2s;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #ff0066;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .modal-close:hover {
-    color: #fff;
-    text-shadow: 0 0 10px #ff0066;
+  color: #fff;
+  text-shadow: 0 0 10px #ff0066;
 }
 
 .auth-tabs {
-    display: flex;
-    margin-bottom: 25px;
-    border-bottom: 2px solid #333;
+  display: flex;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #333;
 }
 
 .auth-tab {
-    flex: 1;
-    padding: 12px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.6rem;
-    background: transparent;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.2s;
+  flex: 1;
+  padding: 12px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 0.6rem;
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .auth-tab.active {
-    color: #00ffff;
-    border-bottom: 2px solid #00ffff;
-    margin-bottom: -2px;
+  color: #00ffff;
+  border-bottom: 2px solid #00ffff;
+  margin-bottom: -2px;
 }
 
 .auth-tab:hover:not(.active) {
-    color: #888;
+  color: #888;
 }
 
 .auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .auth-input {
-    padding: 15px;
-    font-family: 'DungGeunMo', cursive;
-    font-size: 1rem;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid #444;
-    color: #fff;
-    outline: none;
-    transition: all 0.2s;
+  padding: 15px;
+  font-family: "DungGeunMo", cursive;
+  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #444;
+  color: #fff;
+  outline: none;
+  transition: all 0.2s;
 }
 
 .auth-input:focus {
-    border-color: #00ffff;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  border-color: #00ffff;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
 .auth-input::placeholder {
-    color: #666;
+  color: #666;
 }
 
 .auth-submit {
-    padding: 15px;
-    font-family: 'DungGeunMo', cursive;
-    font-size: 1.1rem;
-    background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
-    border: none;
-    color: #000;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 10px;
+  padding: 15px;
+  font-family: "DungGeunMo", cursive;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+  border: none;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
 }
 
 .auth-submit:hover {
-    box-shadow: 0 0 20px #00ff00;
-    transform: scale(1.02);
+  box-shadow: 0 0 20px #00ff00;
+  transform: scale(1.02);
 }
 
 .auth-divider {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
 }
 
 .auth-divider::before,
 .auth-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #444;
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #444;
 }
 
 .auth-divider span {
-    padding: 0 15px;
-    font-size: 0.6rem;
-    color: #666;
+  padding: 0 15px;
+  font-size: 0.6rem;
+  color: #666;
 }
 
 .google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px;
-    font-family: 'DungGeunMo', cursive;
-    font-size: 1rem;
-    background: #fff;
-    border: none;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  font-family: "DungGeunMo", cursive;
+  font-size: 1rem;
+  background: #fff;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .google-btn img {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .google-btn:hover {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 .auth-message {
-    font-family: 'DungGeunMo', cursive;
-    font-size: 0.9rem;
-    text-align: center;
-    padding: 10px;
-    min-height: 40px;
+  font-family: "DungGeunMo", cursive;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 10px;
+  min-height: 40px;
 }
 
 .auth-message.error {
-    color: #ff0066;
+  color: #ff0066;
 }
 
 .auth-message.success {
-    color: #00ff00;
+  color: #00ff00;
 }
